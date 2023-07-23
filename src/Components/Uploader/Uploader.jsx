@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
 import "./Uploader.css";
+// import { uploadSkrull, uploadServer } from "../APIServices/APIServices";
 
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [uploadStatus, setUploadStatus] = useState("");
+  // const [url, seturl] = useState(null);
+  // const [skrull, setSkrull] = useState(null);
   const fileInputRef = useRef(null);
 
   const onImagePicked = (event) => {
@@ -11,7 +13,31 @@ const Uploader = () => {
   };
 
   const onUpload = (event) => {
-console.log("btn clicked");  };
+    console.log("onUpload clicked");
+    // const headers = {};
+    // const formData = `${selectedFile}`;
+
+    // uploadServer(formData, headers)
+    //   .then((response) => seturl(response.data))
+    //   .catch((error) => console.error(error));
+  };
+
+  const onSkrull = (event) => {
+    console.log("onSkrull clicked");
+
+    // const skrullHeaders = {};
+    // const formData = `${url}`;
+
+    // uploadSkrull(formData, skrullHeaders)
+    //   .then((response) => setSkrull(response.data))
+    //   .catch((error) => console.error(error));
+
+  };
+  const onViewAll = (event) => {
+
+    console.log("onViewAll clicked");
+
+  };
 
   return (
     <div className="Uploader_Body">
@@ -35,8 +61,16 @@ console.log("btn clicked");  };
           </div>
         )}
       </label>
-      <div className="Buttons_Container" onClick={onUpload}>
-        Upload to Server
+      <div className="Buttons">
+        <div className="Buttons_Container" onClick={onUpload}>
+          Upload to Server
+        </div>
+        <div className="Buttons_Container" onClick={onSkrull}>
+          Upload to Skrull
+        </div>
+        <div className="Buttons_Container" onClick={onViewAll}>
+          View All
+        </div>
       </div>
     </div>
   );
