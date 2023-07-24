@@ -1,42 +1,57 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Uploader.css";
-// import { uploadSkrull, uploadServer } from "../APIServices/APIServices";
+import { uploadServer, uploadImage } from "../APIServices/APIServices";
 
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [url, seturl] = useState(null);
+  const [signedUrl, setSignedUrl] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null)
   // const [skrull, setSkrull] = useState(null);
   const fileInputRef = useRef(null);
 
   const onImagePicked = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(event.target.files[0]); 
   };
 
   const onUpload = (event) => {
-    console.log("onUpload clicked");
-    // const headers = {};
-    // const formData = `${selectedFile}`;
+    console.log("onUpload clicked",selectedFile,selectedFile.name);
 
-    // uploadServer(formData, headers)
-    //   .then((response) => seturl(response.data))
-    //   .catch((error) => console.error(error));
+    const requestPayload = {
+      filename: selectedFile.name,
+      "content_type": "image/jpg" 
+    }
+
+    uploadServer(requestPayload)
+      .then((response) => setSignedUrl(response.data))
+      .catch((error) => console.error(error));
   };
 
+  useEffect(()=>{
+    console.log("useEffect",signedUrl);
+    if(signedUrl){
+        const formData = new FormData();
+        formData.append(`${selectedFile.name}`,`${selectedFile}`);
+        uploadImage(`${signedUrl.uploadUrl}`, formData)
+        .then((response) => setUploadedFile(response.data))
+        .catch((error) => console.error(error));
+    }
+console.log("post use effect",uploadedFile);
+
+  }, [signedUrl])
+
+  // console.log(uploadedFile && uploadedFile.name);
+
   const onSkrull = (event) => {
-    console.log("onSkrull clicked");
+    // console.log("onSkrull clicked", signedUrl.resourceUrl);
 
     // const skrullHeaders = {};
     // const formData = `${url}`;
-
     // uploadSkrull(formData, skrullHeaders)
     //   .then((response) => setSkrull(response.data))
     //   .catch((error) => console.error(error));
-
   };
   const onViewAll = (event) => {
-
     console.log("onViewAll clicked");
-
   };
 
   return (
