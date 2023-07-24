@@ -31,8 +31,11 @@ const Uploader = () => {
     if(signedUrl){
         const formData = new FormData();
         formData.append(`${selectedFile.name}`,`${selectedFile}`);
-        uploadImage(`${signedUrl.uploadUrl}`, formData)
-        .then((response) => setUploadedFile(response.data))
+        const header = {
+          'Content-Type': `${selectedFile.type}`
+        }
+        uploadImage(`${signedUrl.uploadUrl}`, selectedFile, header)
+          .then((response) => setUploadedFile(response.data))
         .catch((error) => console.error(error));
     }
 console.log("post use effect",uploadedFile);

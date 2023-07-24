@@ -19,13 +19,9 @@ export const uploadServer = async (requestPayload) => {
   }
 };
 
-export const uploadImage = async (uploadUrl, formData) => {
+export const uploadImage = async (uploadUrl, selectedFile, header) => {
   try {
-    const response = await axios.put(uploadUrl, formData,{
-      headers: {
-        "x-api-key": signAuth,
-      }
-    });
+    const response = await axios.put(uploadUrl, selectedFile,header);
     console.log(response.data);
     return response.data;
   } catch (error) {
