@@ -1,61 +1,65 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Uploader.css";
-import { uploadServer, uploadImage } from "../APIServices/APIServices";
+import {
+  uploadServer,
+  uploadImage,
+  uploadSkrull,
+  uniqueId,
+} from "../APIServices/APIServices";
 
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [signedUrl, setSignedUrl] = useState(null);
-  const [uploadedFile, setUploadedFile] = useState(null)
-  // const [skrull, setSkrull] = useState(null);
+  const [skrull, setSkrull] = useState(null);
   const fileInputRef = useRef(null);
 
   const onImagePicked = (event) => {
-    setSelectedFile(event.target.files[0]); 
+    setSelectedFile(event.target.files[0]);
   };
 
   const onUpload = (event) => {
-    console.log("onUpload clicked",selectedFile,selectedFile.name);
+    console.log("onUpload clicked", selectedFile, selectedFile.name);
 
     const requestPayload = {
       filename: selectedFile.name,
-      "content_type": "image/jpg" 
-    }
+      content_type: "image/jpeg",
+    };
 
     uploadServer(requestPayload)
       .then((response) => setSignedUrl(response.data))
       .catch((error) => console.error(error));
   };
 
-  useEffect(()=>{
-    console.log("useEffect",signedUrl);
-    if(signedUrl){
-        const formData = new FormData();
-        formData.append(`${selectedFile.name}`,`${selectedFile}`);
-        const header = {
-          'Content-Type': `${selectedFile.type}`
-        }
-        uploadImage(`${signedUrl.uploadUrl}`, selectedFile, header)
-          .then((response) => setUploadedFile(response.data))
+  useEffect(() => {
+    console.log("useEffect", signedUrl);
+    if (signedUrl) {
+      const header = {
+        "Content-Type": `${selectedFile.type}`,
+      };
+      uploadImage(`${signedUrl.uploadUrl}`, selectedFile, header)
+        .then((response) => console.log(response.data))
         .catch((error) => console.error(error));
     }
-console.log("post use effect",uploadedFile);
-
-  }, [signedUrl])
-
-  // console.log(uploadedFile && uploadedFile.name);
+  }, [signedUrl]);
 
   const onSkrull = (event) => {
-    // console.log("onSkrull clicked", signedUrl.resourceUrl);
+    console.log("onSkrull clicked");
 
-    // const skrullHeaders = {};
-    // const formData = `${url}`;
-    // uploadSkrull(formData, skrullHeaders)
-    //   .then((response) => setSkrull(response.data))
-    //   .catch((error) => console.error(error));
+    const data = {
+      id: uniqueId,
+      url: `${signedUrl.uploadUrl}`,
+    };
+
+    console.log("data",data);
+
+    uploadSkrull(data)
+      .then((response) => setSkrull(response.data))
+      .catch((error) => console.error(error));
+      console.log("post onSkrull clicked",skrull);
   };
-  const onViewAll = (event) => {
-    console.log("onViewAll clicked");
-  };
+  // const onViewAll = (event) => {
+  //   console.log("onViewAll clicked");
+  // };
 
   return (
     <div className="Uploader_Body">
@@ -79,16 +83,18 @@ console.log("post use effect",uploadedFile);
           </div>
         )}
       </label>
+
       <div className="Buttons">
-        <div className="Buttons_Container" onClick={onUpload}>
-          Upload to Server
-        </div>
-        <div className="Buttons_Container" onClick={onSkrull}>
+        {!signedUrl ? (
+          <div className="Buttons_Container" onClick={onUpload}>
+            Upload to Server
+          </div>
+        ): (<div className="Buttons_Container" onClick={onSkrull}>
           Upload to Skrull
-        </div>
-        <div className="Buttons_Container" onClick={onViewAll}>
+        </div>)}
+        {/* <div className="Buttons_Container" onClick={onViewAll}>
           View All
-        </div>
+        </div> */}
       </div>
     </div>
   );

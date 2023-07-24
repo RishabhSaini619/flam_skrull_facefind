@@ -10,6 +10,9 @@
   justify-content: center;
   align-items: center;
 }
+.Preview{
+  display: flex;
+}
 .Image_Container {
   width: 60%;
   height: 40%;
