@@ -50,12 +50,12 @@ const Uploader = () => {
       url: `${signedUrl.uploadUrl}`,
     };
 
-    console.log("data",data);
+    console.log("data", data);
 
     uploadSkrull(data)
       .then((response) => setSkrull(response.data))
       .catch((error) => console.error(error));
-      console.log("post onSkrull clicked",skrull);
+    console.log("post onSkrull clicked", skrull);
   };
   // const onViewAll = (event) => {
   //   console.log("onViewAll clicked");
@@ -85,14 +85,27 @@ const Uploader = () => {
       </label>
 
       <div className="Buttons">
-        {!signedUrl ? (
+        {!signedUrl && (
+          <div className="Buttons_Container" onClick={onUpload}>
+            Upload to Server
+          </div>
+        )}
+        {signedUrl && (
+          <div className="Buttons_Container" onClick={onSkrull}>
+            Upload to Skrull
+          </div>
+        )}
+        {/* 
+        
+         {!signedUrl ? (
           <div className="Buttons_Container" onClick={onUpload}>
             Upload to Server
           </div>
         ): (<div className="Buttons_Container" onClick={onSkrull}>
           Upload to Skrull
         </div>)}
-        {/* <div className="Buttons_Container" onClick={onViewAll}>
+
+        <div className="Buttons_Container" onClick={onViewAll}>
           View All
         </div> */}
       </div>
