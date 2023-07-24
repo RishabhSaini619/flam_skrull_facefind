@@ -7,6 +7,16 @@ import {
   uniqueId,
 } from "../APIServices/APIServices";
 
+function generateId() {
+  var length = 16,
+      charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      retVal = "";
+  for (var i = 0, n = charset.length; i < length; ++i) {
+      retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+}
+
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [signedUrl, setSignedUrl] = useState(null);
@@ -16,6 +26,7 @@ const Uploader = () => {
   const onImagePicked = (event) => {
     setSelectedFile(event.target.files[0]);
   };
+
 
   const onUpload = (event) => {
     console.log("onUpload clicked", selectedFile, selectedFile.name);
@@ -46,7 +57,7 @@ const Uploader = () => {
     console.log("onSkrull clicked");
 
     const data = {
-      id: uniqueId,
+      id: generateId(),
       url: `${signedUrl.uploadUrl}`,
     };
 

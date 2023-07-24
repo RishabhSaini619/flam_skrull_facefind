@@ -1,5 +1,4 @@
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 const signURL = "https://zingcam.dev.flamapp.com/zingcam/v1/signed-url";
 
@@ -29,7 +28,8 @@ export const uploadImage = async (uploadUrl, selectedFile, header) => {
   }
 };
 
-export const uniqueId = uuidv4();
+
+
 const skrullURL =
   "https://zingcam.dev.flamapp.com/scarlet/v1/upload";
 
