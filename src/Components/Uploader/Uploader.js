@@ -4,15 +4,14 @@ import {
   uploadServer,
   uploadImage,
   uploadSkrull,
-  uniqueId,
 } from "../APIServices/APIServices";
 
 function generateId() {
   var length = 16,
-      charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-      retVal = "";
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    retVal = "";
   for (var i = 0, n = charset.length; i < length; ++i) {
-      retVal += charset.charAt(Math.floor(Math.random() * n));
+    retVal += charset.charAt(Math.floor(Math.random() * n));
   }
   return retVal;
 }
@@ -26,7 +25,6 @@ const Uploader = () => {
   const onImagePicked = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-
 
   const onUpload = (event) => {
     console.log("onUpload clicked", selectedFile, selectedFile.name);
@@ -68,9 +66,6 @@ const Uploader = () => {
       .catch((error) => console.error(error));
     console.log("post onSkrull clicked", skrull);
   };
-  // const onViewAll = (event) => {
-  //   console.log("onViewAll clicked");
-  // };
 
   return (
     <div className="Uploader_Body">
