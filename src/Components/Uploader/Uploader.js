@@ -50,7 +50,7 @@ const Uploader = () => {
       url: `${signedUrl.resourceUrl}`,
     };
 
-    console.log("data", data);
+    console.log("data", data,"upskrull",upSkrull);
 
     await uploadSkrull(data)
       .then((response) => setUpSkrull(response))
@@ -66,7 +66,7 @@ const Uploader = () => {
       url: `${signedUrl.resourceUrl}`,
     };
 
-    console.log("data", data);
+    console.log("data", data,"upskrull",upSkrull);
 
     await searchSkrull(data)
       .then((response) => setSchSkrull(response.data))
@@ -75,7 +75,6 @@ const Uploader = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect", signedUrl);
     if (signedUrl) {
       const header = {
         "Content-Type": `${selectedFile.type}`,
@@ -142,8 +141,17 @@ const Uploader = () => {
                 </div>
               ))
             ) : (
-              <div></div>
+              // ) : schSkrull ? (
+              //   <div>run</div>
+              <div>Plaese Wait Data is loading</div>
             )}
+
+            <div className="Buttons">
+              <div className="Buttons_Container" onClick={onUploadSkrull}>
+                Upload to Skrull
+              </div>
+            </div>
+
             {upSkrull.data && upSkrull.data.length > 0 ? (
               <div className="uploadData">
                 <div className="uploadHead">
@@ -166,14 +174,11 @@ const Uploader = () => {
                   </div>
                 ))}
               </div>
+            // ) : upSkrull === null ? (
+            //   <div>Plaese wait data uifdk is loading.</div>
             ) : (
               <div></div>
             )}
-          </div>
-          <div className="Buttons">
-            <div className="Buttons_Container" onClick={onUploadSkrull}>
-              Upload to Skrull
-            </div>
           </div>
         </div>
       )}
