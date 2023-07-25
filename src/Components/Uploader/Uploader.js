@@ -4,6 +4,7 @@ import {
   uploadServer,
   uploadImage,
   uploadSkrull,
+  searchSkrull,
 } from "../APIServices/APIServices";
 
 function generateId() {
@@ -19,7 +20,9 @@ function generateId() {
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [signedUrl, setSignedUrl] = useState(null);
-  const [skrull, setSkrull] = useState(null);
+  const [upSkrull, setUpSkrull] = useState([]);
+  const [schSkrull, setSchSkrull] = useState(null);
+
   const fileInputRef = useRef(null);
 
   const onImagePicked = (event) => {
@@ -46,25 +49,41 @@ const Uploader = () => {
         "Content-Type": `${selectedFile.type}`,
       };
       uploadImage(`${signedUrl.uploadUrl}`, selectedFile, header)
-        .then((response) => console.log(response.data))
+        .then((response) => console.log("uploadImage", response.data))
         .catch((error) => console.error(error));
     }
   }, [signedUrl]);
 
-  const onSkrull = (event) => {
-    console.log("onSkrull clicked");
+  const onUploadSkrull = (event) => {
+    console.log("onUploadSkrull clicked");
 
     const data = {
       id: generateId(),
-      url: `${signedUrl.uploadUrl}`,
+      url: `${signedUrl.resourceUrl}`,
     };
 
     console.log("data", data);
 
     uploadSkrull(data)
-      .then((response) => setSkrull(response.data))
+      .then((response) => setUpSkrull(response))
       .catch((error) => console.error(error));
-    console.log("post onSkrull clicked", skrull);
+    console.log("post onUploadSkrull clicked", upSkrull);
+  };
+
+  const onSearchSkrull = (event) => {
+    console.log("onSearchSkrull clicked");
+
+    const data = {
+      id: generateId(),
+      url: `${signedUrl.resourceUrl}`,
+    };
+
+    console.log("data", data);
+
+    searchSkrull(data)
+      .then((response) => setSchSkrull(response.data))
+      .catch((error) => console.error(error));
+    console.log("post onSearchSkrull clicked", schSkrull);
   };
 
   return (
@@ -89,31 +108,70 @@ const Uploader = () => {
           </div>
         )}
       </label>
-
       <div className="Buttons">
-        {!signedUrl && (
-          <div className="Buttons_Container" onClick={onUpload}>
-            Upload to Server
+        {!signedUrl ? (
+          <div className="Buttons">
+            <div className="Buttons_Container" onClick={onUpload}>
+              Upload to Server
+            </div>
+          </div>
+        ) : (
+          <div className="Buttons">
+            <div className="Buttons_Container" onClick={onUploadSkrull}>
+              Upload to Skrull
+            </div>
+            <div className="Buttons_Container" onClick={onSearchSkrull}>
+              Search from Skrull
+            </div>
           </div>
         )}
-        {signedUrl && (
-          <div className="Buttons_Container" onClick={onSkrull}>
-            Upload to Skrull
+      </div>
+      <div className="Response">
+        {upSkrull.data && upSkrull.data.length > 0 ? (
+          <div className="uploadData">
+            <div className="uploadHead">
+              <div>Message : </div>
+              <div>{upSkrull.message}</div>
+            </div>
+            {upSkrull.data.map((index) => (
+              <div className="uploadIndex">
+                <div className="uploadItem">
+                  <div>Student Id : </div>
+                  <div> {index.student_id}</div>
+                </div>
+                <div className="uploadItem">
+                  <div>Order Id : </div>
+                  <div>{index.order_id}</div>
+                </div>
+                <div className="uploadItem">
+                  <div>Message : </div> <div>{index.message}</div>
+                </div>
+              </div>
+            ))}
           </div>
+        ) : (
+          <div className="responseData">Loading</div>
         )}
-        {/* 
-        
-         {!signedUrl ? (
-          <div className="Buttons_Container" onClick={onUpload}>
-            Upload to Server
-          </div>
-        ): (<div className="Buttons_Container" onClick={onSkrull}>
-          Upload to Skrull
-        </div>)}
 
-        <div className="Buttons_Container" onClick={onViewAll}>
-          View All
-        </div> */}
+        {schSkrull && schSkrull.length > 0 ? (
+          schSkrull.map((index) => (
+            <div className="searchData" >
+              <img className="searchImage" src={index.image_url} alt="studentImage"/>
+              <div className="searchIndex">
+              <div className="searchItem">
+                  <div>Order Id : </div>
+                  <div> {index._id}</div>
+                </div>
+                <div className="searchItem">
+                  <div>Student Id : </div>
+                  <div>{index.student_id}</div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="responseData">Loading</div>
+        )}
       </div>
     </div>
   );

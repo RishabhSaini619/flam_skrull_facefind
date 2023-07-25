@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
 }
-.Preview{
+.Preview {
   display: flex;
 }
 .Image_Container {
@@ -28,7 +28,7 @@
   flex-direction: column;
   align-content: center;
 }
-.Buttons{
+.Buttons {
   margin: 3%;
   display: flex;
   flex-direction: row;
@@ -49,9 +49,8 @@
   background-color: rgb(151, 234, 255);
 }
 .Buttons_Container:active {
-    background-color: rgb(139, 149, 247);
-  }
-  
+  background-color: rgb(139, 149, 247);
+}
 
 .Image {
   border-radius: 20px;
@@ -62,4 +61,86 @@
 }
 .FileUpload {
   margin: 5%;
+}
+
+.Response {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+.responseData {
+  display: flex;
+  flex-direction: column;
+  margin: 1%;
+  padding: 3%;
+  border: 1px solid grey;
+  border-radius: 20px;
+}
+
+/* Upload */
+.uploadData {
+  display: flex;
+  flex-direction: column;
+  margin: 1%;
+  padding: 3%;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+.uploadHead {
+  display: flex;
+  padding: 1%;
+  margin: 2%;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.726);
+}
+.uploadIndex {
+  margin: 2%;
+  padding: 1%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.726);
+}
+.uploadItem {
+  display: flex;
+  margin: 2%;
+  justify-content: space-between;
+}
+
+/* Search */
+
+.searchData {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 1%;
+  padding: 3%;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+
+.searchImage {
+  border: 1px soild grey;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.726);
+
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+}
+
+.searchIndex {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.726);
+}
+
+.searchItem {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  margin: 2%;
+  justify-content: space-between;
 }

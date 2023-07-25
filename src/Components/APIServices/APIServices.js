@@ -28,13 +28,29 @@ export const uploadImage = async (uploadUrl, selectedFile, header) => {
   }
 };
 
-const skrullURL = "https://zingcam.dev.flamapp.com/scarlet/v1/upload";
-
 const skrullAuth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOnRydWV9.Y4gTukaeBENTPhv8vXdZA29Ooc5SHBron-BJ8ev7bNU";
+
+const skrullURL = "https://zingcam.dev.flamapp.com/scarlet/v1/";
+
 
 export const uploadSkrull = async (data) => {
   try {
-    const response = await axios.post(skrullURL, data, {
+    const response = await axios.post(`${skrullURL}upload`, data, {
+      headers: {
+        Authorization: skrullAuth,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message);
+  }
+};
+
+export const searchSkrull = async (data) => {
+  try {
+    const response = await axios.post(`${skrullURL}search`, data, {
       headers: {
         Authorization: skrullAuth,
       },
