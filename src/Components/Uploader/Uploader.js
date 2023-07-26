@@ -22,6 +22,7 @@ const Uploader = () => {
   const [signedUrl, setSignedUrl] = useState(null);
   const [upSkrull, setUpSkrull] = useState([]);
   const [schSkrull, setSchSkrull] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -43,6 +44,7 @@ const Uploader = () => {
   };
 
   const onUploadSkrull = async () => {
+    setLoading(true);
     console.log("onUploadSkrull clicked");
 
     const data = {
@@ -50,7 +52,7 @@ const Uploader = () => {
       url: `${signedUrl.resourceUrl}`,
     };
 
-    console.log("data", data,"upskrull",upSkrull);
+    console.log("data", data, "upskrull", upSkrull);
 
     await uploadSkrull(data)
       .then((response) => setUpSkrull(response))
@@ -66,7 +68,7 @@ const Uploader = () => {
       url: `${signedUrl.resourceUrl}`,
     };
 
-    console.log("data", data,"upskrull",upSkrull);
+    console.log("data", data, "upskrull", upSkrull);
 
     await searchSkrull(data)
       .then((response) => setSchSkrull(response.data))
@@ -122,7 +124,7 @@ const Uploader = () => {
           <div className="Response">
             {schSkrull && schSkrull.length > 0 ? (
               schSkrull.map((index) => (
-                <div className="searchData">
+                <div key={index._id} className="searchData">
                   <img
                     className="searchImage"
                     src={index.image_url}
@@ -141,15 +143,17 @@ const Uploader = () => {
                 </div>
               ))
             ) : (
-              // ) : schSkrull ? (
-              //   <div>run</div>
-              <div>Plaese Wait Data is loading</div>
+              <div>Plaese wait while data is fetching.</div>
             )}
 
             <div className="Buttons">
-              <div className="Buttons_Container" onClick={onUploadSkrull}>
-                Upload to Skrull
-              </div>
+              {isLoading === true ? (
+                <div></div>
+              ) : (
+                <div className="Buttons_Container" onClick={onUploadSkrull}>
+                  Upload to Skrull
+                </div>
+              )}
             </div>
 
             {upSkrull.data && upSkrull.data.length > 0 ? (
@@ -159,7 +163,7 @@ const Uploader = () => {
                   <div>{upSkrull.message}</div>
                 </div>
                 {upSkrull.data.map((index) => (
-                  <div className="uploadIndex">
+                  <div  key={index.order_id} className="uploadIndex">
                     <div className="uploadItem">
                       <div>Student Id : </div>
                       <div> {index.student_id}</div>
@@ -174,8 +178,8 @@ const Uploader = () => {
                   </div>
                 ))}
               </div>
-            // ) : upSkrull === null ? (
-            //   <div>Plaese wait data uifdk is loading.</div>
+            ) : isLoading === true ? (
+              <div>Plaese wait while data is fetching.</div>
             ) : (
               <div></div>
             )}
