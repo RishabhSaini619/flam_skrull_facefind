@@ -6,6 +6,7 @@ import {
   uploadSkrull,
   searchSkrull,
 } from "../APIServices/APIServices";
+import { Loader } from "../Loader/Loader";
 
 function generateId() {
   var length = 16,
@@ -43,23 +44,6 @@ const Uploader = () => {
       .catch((error) => console.error(error));
   };
 
-  const onUploadSkrull = async () => {
-    setLoading(true);
-    console.log("onUploadSkrull clicked");
-
-    const data = {
-      id: generateId(),
-      url: `${signedUrl.resourceUrl}`,
-    };
-
-    console.log("data", data, "upskrull", upSkrull);
-
-    await uploadSkrull(data)
-      .then((response) => setUpSkrull(response))
-      .catch((error) => console.error(error));
-    console.log("post onUploadSkrull clicked", upSkrull);
-  };
-
   const onSearchSkrull = async () => {
     console.log("onSearchSkrull clicked");
 
@@ -76,6 +60,28 @@ const Uploader = () => {
     console.log("post onSearchSkrull clicked", schSkrull);
   };
 
+  const onUploadSkrull = async () => {
+    console.log("onUploadSkrull clicked");
+
+    const data = {
+      id: generateId(),
+      url: `${signedUrl.resourceUrl}`,
+    };
+
+    console.log("data", data, "upskrull", upSkrull);
+
+    await uploadSkrull(data)
+      .then((response) => setUpSkrull(response))
+      .catch((error) => console.error(error));
+    console.log("post onUploadSkrull clicked", upSkrull);
+    onSearchSkrull();
+  };
+  const onUploadSkrullBtn = async () => {
+    setLoading(true);
+
+    // onUploadSkrull();
+  };
+
   useEffect(() => {
     if (signedUrl) {
       const header = {
@@ -84,7 +90,7 @@ const Uploader = () => {
       uploadImage(`${signedUrl.uploadUrl}`, selectedFile, header)
         .then((response) => {
           console.log("uploadImage", response.data);
-          onSearchSkrull();
+          onUploadSkrull();
         })
         .catch((error) => console.error(error));
     }
@@ -115,7 +121,7 @@ const Uploader = () => {
           </label>
           <div className="Buttons">
             <div className="Buttons_Container" onClick={onUpload}>
-              Upload to Server
+              Upload
             </div>
           </div>
         </div>
@@ -143,45 +149,48 @@ const Uploader = () => {
                 </div>
               ))
             ) : (
-              <div>Plaese wait while data is fetching.</div>
+              <Loader isLoading={isLoading}/>
             )}
-
-            <div className="Buttons">
-              {isLoading === true ? (
-                <div></div>
-              ) : (
-                <div className="Buttons_Container" onClick={onUploadSkrull}>
-                  Upload to Skrull
-                </div>
-              )}
-            </div>
-
-            {upSkrull.data && upSkrull.data.length > 0 ? (
-              <div className="uploadData">
-                <div className="uploadHead">
-                  <div>Message : </div>
-                  <div>{upSkrull.message}</div>
-                </div>
-                {upSkrull.data.map((index) => (
-                  <div  key={index.order_id} className="uploadIndex">
-                    <div className="uploadItem">
-                      <div>Student Id : </div>
-                      <div> {index.student_id}</div>
-                    </div>
-                    <div className="uploadItem">
-                      <div>Order Id : </div>
-                      <div>{index.order_id}</div>
-                    </div>
-                    <div className="uploadItem">
-                      <div>Message : </div> <div>{index.message}</div>
-                    </div>
+            {isLoading === true ? (
+              upSkrull.data && upSkrull.data.length > 0 ? (
+                <div className="uploadData">
+                  <div className="uploadHead">
+                    <div>Message : </div>
+                    <div>{upSkrull.message}</div>
                   </div>
-                ))}
-              </div>
-            ) : isLoading === true ? (
-              <div>Plaese wait while data is fetching.</div>
+                  {upSkrull.data.map((index) => (
+                    <div key={index.order_id} className="uploadIndex">
+                      <div className="uploadItem">
+                        <div>Order Id : </div>
+                        <div>{index.order_id}</div>
+                      </div>
+                      <div className="uploadItem">
+                        <div>Student Id : </div>
+                        <div>{index.student_id}</div>
+                      </div>
+                      <div className="uploadItem">
+                        <div>Message : </div>
+                        <div>{index.message}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Loader isLoading={isLoading}/>
+                )
             ) : (
-              <div></div>
+              <div className="Buttons">
+                {isLoading === true ? (
+                  <div></div>
+                ) : (
+                  <div
+                    className="Buttons_Container"
+                    onClick={onUploadSkrullBtn}
+                  >
+                    Check Upload Status
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

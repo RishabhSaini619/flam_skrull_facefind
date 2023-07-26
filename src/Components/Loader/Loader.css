@@ -1,0 +1,13 @@
+.Loader{
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    justify-content: space-around;
+}
+.Spinner {
+  width: 50px !important;
+  height: 50px !important;
+  display: block !important;
+  margin: 0 auto;
+  border-color: rgb(0, 0, 0) rgb(0, 0, 0) transparent !important;
+}
